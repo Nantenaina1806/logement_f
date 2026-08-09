@@ -1,0 +1,75 @@
+LOGEMENTMAD - VERSION PROFESSIONNELLE
+
+============================================================
+OPTION A - AVEC DOCKER (tsotra indrindra, 1 commande ihany)
+============================================================
+1) Kopia ny fichier .env.example ho .env eo amin'ny racine ary ovay ny
+   valeur (mot de passe, JWT_SECRET, adiresy Facebook...).
+2) Amin'ny racine ny projet (misy ny docker-compose.yml) :
+   docker compose up --build
+3) Ampiasao ity rehefa vita ny build voalohany (mamorona ny compte admin) :
+   docker compose exec server npm run create-admin
+4) Site public  : http://localhost:8080
+   Espace admin : http://localhost:8080/login
+   API          : http://localhost:5000
+
+============================================================
+OPTION B - INSTALLATION MANOTA (SANS DOCKER)
+============================================================
+1) Installation backend
+   cd server
+   npm install
+   npm run dev
+
+2) Installation frontend
+   cd client
+   npm install
+   npm run dev
+
+3) Base de données PostgreSQL / pgAdmin
+   - Le PDF est ici : docs/GUIDE_BASE_DE_DONNEES_PGADMIN.pdf
+   - Le script SQL complet est ici : database/BASE_DE_DONNEES_A_COPIER_PGADMIN.sql
+   - Créer d'abord la base : logement_vente_location
+   - Puis copier/coller le SQL complet dans pgAdmin.
+
+Compte admin par défaut :
+   Email : admin@logement.mg
+   Mot de passe : admin123
+
+============================================================
+NOUVEAUTÉS AJOUTÉES (mise à jour) :
+============================================================
+- Localisation : le site est maintenant présenté pour Fianarantsoa (au lieu d'Antananarivo).
+- Gestion des utilisateurs : menu "Utilisateurs" (visible admin uniquement) avec bouton
+  "Ajouter un nouvel utilisateur". Les agents simples ne voient pas ce menu.
+- Gestion des catégories : menu "Catégories" (admin uniquement) pour ajouter/supprimer
+  des catégories, utilisées automatiquement dans le formulaire d'ajout de logement et
+  sur le site public.
+- Quartier : chaque logement peut avoir un quartier (ex : Andraivato). Filtre par
+  quartier disponible sur le site public et dans la liste des logements en admin.
+- Historique : bouton "Vider l'historique" (admin) pour tout supprimer d'un coup,
+  et bouton "Supprimer" pour effacer une ligne précise.
+- Logement traité : dans la liste des logements, bouton "Marquer traité" / "Remettre
+  en ligne". Un logement marqué "traité" n'apparaît plus sur le site public, mais reste
+  visible et modifiable dans l'espace admin.
+
+============================================================
+NOUVEAUTÉS AJOUTÉES (mise à jour 2) :
+============================================================
+- Pages "Guide" et "À propos" supprimées (menu, routes et fichiers) pour un espace
+  admin plus épuré.
+- Facebook : lien "Suivez-nous sur Facebook" dans le pied de page du site public, et
+  bouton "Partager sur Facebook" sur la fiche de chaque logement. L'adresse de la page
+  se configure dans client/.env via VITE_FACEBOOK_URL (voir client/.env.example).
+- Performance : pagination "Voir plus" sur la page d'accueil (au lieu de tout charger
+  d'un coup), chargement différé (lazy) des images, affichage skeleton pendant le
+  chargement, et compression automatique (via sharp) des photos envoyées côté serveur
+  pour réduire leur poids.
+- Déploiement : ajout de Dockerfile (server et client), nginx.conf et
+  docker-compose.yml pour déployer toute l'application (base de données comprise) en
+  une seule commande - voir OPTION A ci-dessus.
+
+IMPORTANT : ré-exécutez le script SQL (database/BASE_DE_DONNEES_A_COPIER_PGADMIN.sql
+ou server/schema.sql) dans pgAdmin pour ajouter les nouvelles colonnes (quartier, traite)
+et la nouvelle table categories. Le script est sans danger à ré-exécuter : il n'efface
+pas les données existantes.
