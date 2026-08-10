@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Building2, LogIn } from 'lucide-react';
+import { Building2, LogIn, Eye, EyeOff } from 'lucide-react';
 import api from '../../api';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [motDePasse, setMotDePasse] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [erreur, setErreur] = useState('');
   const [chargement, setChargement] = useState(false);
   const navigate = useNavigate();
@@ -54,14 +55,24 @@ export default function Login() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <input
-            type="password"
-            placeholder="Mot de passe"
-            className="w-full rounded-2xl border border-slate-200 p-4 outline-none transition focus:border-amber-500"
-            value={motDePasse}
-            onChange={(e) => setMotDePasse(e.target.value)}
-            required
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Mot de passe"
+              className="w-full rounded-2xl border border-slate-200 p-4 pr-10 outline-none transition focus:border-amber-500"
+              value={motDePasse}
+              onChange={(e) => setMotDePasse(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((s) => !s)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 p-1"
+              aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
+            >
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+            </button>
+          </div>
         </div>
 
         <button disabled={chargement} type="submit" className="mt-6 flex w-full items-center justify-center gap-2 rounded-2xl bg-amber-700 p-4 font-black text-white transition hover:bg-amber-800 disabled:cursor-not-allowed disabled:opacity-60">
