@@ -77,7 +77,14 @@ CREATE TABLE IF NOT EXISTS historiques (
 INSERT INTO categories (nom) VALUES ('Famille'), ('Étudiant'), ('Simple')
 ON CONFLICT (nom) DO NOTHING;
 
-INSERT INTO quartiers (nom) VALUES ('Andraivato'), ('Ambalavao'), ('Tanambao')
+INSERT INTO quartiers (nom) VALUES
+  ('Andraivato'),
+  ('Ambalavao'),
+  ('Tanambao'),
+  ('Andrainjato'),
+  ('Andraijato'),
+  ('Ankofafa'),
+  ('Ivory')
 ON CONFLICT (nom) DO NOTHING;
 
 CREATE INDEX IF NOT EXISTS idx_logements_type ON logements(type);

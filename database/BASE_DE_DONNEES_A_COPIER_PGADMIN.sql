@@ -21,6 +21,12 @@ CREATE TABLE IF NOT EXISTS categories (
   date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS quartiers (
+  id SERIAL PRIMARY KEY,
+  nom VARCHAR(100) UNIQUE NOT NULL,
+  date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS logements (
   id SERIAL PRIMARY KEY,
   titre VARCHAR(180) NOT NULL,
@@ -62,6 +68,16 @@ CREATE TABLE IF NOT EXISTS historiques (
 );
 
 INSERT INTO categories (nom) VALUES ('Famille'), ('Étudiant'), ('Simple')
+ON CONFLICT (nom) DO NOTHING;
+
+INSERT INTO quartiers (nom) VALUES
+  ('Andraivato'),
+  ('Ambalavao'),
+  ('Tanambao'),
+  ('Andrainjato'),
+  ('Andraijato'),
+  ('Ankofafa'),
+  ('Ivory')
 ON CONFLICT (nom) DO NOTHING;
 
 CREATE INDEX IF NOT EXISTS idx_logements_type ON logements(type);
